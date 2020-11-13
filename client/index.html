@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id" content="21714498265-i1gurnc3c696d822otqrjq9mvi20d2v2.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway">
+  <title>Todo App</title>
+  <style>
+    body{
+      font-family: 'Raleway';
+      font-size: 22px;
+    }
+    .navbar-nav.navbar-center {
+    position: absolute;
+    left: 16%;
+    transform: translatex(-50%);
+    }
+  </style>
+</head>
+<body>
+
+  <!--Navbar-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" >Todo App</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="nav navbar-nav navbar-center">
+          <li class="nav-item" id="nav-log">
+            <a class="nav-link" href="#" onclick="showLogin(event)">Login</a>
+          </li>
+          <li class="nav-item" id="nav-reg">
+            <a class="nav-link" href="#" onclick="showRegister(event)">Register</a>
+          </li>
+        </ul>
+      </div>
+  </nav>
+
+  <!--Login Page-->
+  <div id="loginbox" style="text-align: center;">
+    <form onsubmit="login(event)" style="margin: auto;">
+      <h3 style="margin: 3% 50%;">LOGIN</h3>
+      <div class="form-row align-items-center" style="margin: 3% 45%; width: 25%;">
+        <div class="col-auto">
+          <input type="text" id="emaillogin" class="form-control mb-2" placeholder="Email">
+          <input type="password" id="passwordlogin" class="form-control mb-2" placeholder="Password">
+          <button type="submit" class="btn btn-primary mb-2">login</button>
+          <div class="g-signin2" style="margin: 2% 25%;" data-onsuccess="onSignIn"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!--Register Page-->
+  <div id="regisbox" style="text-align: center;">
+    <form onsubmit="register(event)" style="margin: auto;">
+      <h3 style="margin: 3% 49%;">REGISTER</h3>
+      <div class="form-row align-items-center" style="margin: 3% 45%; width: 25%;">
+        <div class="col-auto">
+          <input type="text" id="emailregis" class="form-control mb-2" placeholder="Email">
+          <input type="password" id="passwordregis" class="form-control mb-2" placeholder="Password">
+          <button type="submit" class="btn btn-info mb-2">Register</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!--Form Add Todo-->
+  <div id="add-todo">
+    <form onsubmit="addTodo(event)">
+      <div class="form-row align-items-center" style="width: 70%;margin: 3% 15%;">
+        <div class="col-md-6">
+          <input type="text" id="title" class="form-control mb-2" placeholder="Title">
+        </div>
+        <div class="col-md-6">
+          <input type="text" id="description" class="form-control mb-2" placeholder="Description">
+        </div>
+        <div class="col-md-6">
+          <select class='form-control' id="status">
+            <option value="finished">Finished</option>
+            <option value="unfinished">UnFinished</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <input type="date" id="due_date" class="form-control mb-2" placeholder="Due date">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-info mb-2">Add Todo</button>
+        </div>
+      </div>
+    </form>
+  </div> 
+
+  <!--Form Edit Todo-->
+  <div id="edit-todo">
+    <form onsubmit="editTodo(event)">
+      <div class="form-row align-items-center" style="width: 70%;margin: 3% 15%;">
+        <div class="col-md-6">
+          <input type="hidden" id="edit-id" value="">
+          <input type="text" id="edit-title" class="form-control mb-2" placeholder="Title">
+        </div>
+        <div class="col-md-6">
+          <input type="text" id="edit-description" class="form-control mb-2" placeholder="Description">
+        </div>
+        <div class="col-md-6">
+          <select class='form-control' id="select-status">
+            <option value="finished">Finished</option>
+            <option value="unfinished">UnFinished</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <input type="date" id="edit-due_date" class="form-control mb-2" placeholder="Due date">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-2">Submit Edit</button>
+          <button type="button" class="btn btn-info mb-2" onclick="showAdd(event)">Add Todo</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!--Todo List-->
+  <div id="get-todo">
+    <table class="table" style="width: 70%; margin: 3% auto;">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col">Due Date</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="list-todo">
+      </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!--Logout Button-->
+  <div id="logout" class="col-auto" style="margin: 3% 45%;">
+    <button type="submit" onclick="logout(event)" class="btn btn-warning mb-2">Logout</button>
+  </div>
+
+  <!-- MODAL DELETE -->
+  <div id="deleteModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Do you want to Delete this todo?</p>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="delete-id" value="">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button onclick="deleteTodo(event)" type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="main.js"></script>
+</body>
+</html>
